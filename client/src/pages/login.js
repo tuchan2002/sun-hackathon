@@ -40,9 +40,6 @@ const Login = () => {
           onChange={onChangeInput}
           value={email}
         />
-        <Form.Text className="text-muted">
-          We'll never share your email with anyone else.
-        </Form.Text>
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -55,7 +52,11 @@ const Login = () => {
           value={password}
         />
       </Form.Group>
-      <Button variant="primary" type="submit">
+      <Button
+        variant="primary"
+        type="submit"
+        disabled={email && password ? false : true}
+      >
         Login
       </Button>
       <div className="mb-3">

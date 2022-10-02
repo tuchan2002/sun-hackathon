@@ -1,5 +1,6 @@
 import { AUTH, ALERT } from "../types";
 import { postDataAPI } from "../../utils/fetchData";
+import { validateRegister } from "../../utils/validate";
 
 export const login = (data) => async (dispatch) => {
   try {
@@ -58,6 +59,10 @@ export const refreshToken = () => async (dispatch) => {
 };
 
 export const register = (data) => async (dispatch) => {
+  const isCheck = validateRegister(data);
+  if (isCheck.errLength > 0) {
+    return dispatch({ type: ALERT, payload: isCheck.errMsg });
+  }
   try {
     dispatch({ type: ALERT, payload: { loading: true } });
 

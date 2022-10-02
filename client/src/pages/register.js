@@ -7,7 +7,7 @@ import Form from "react-bootstrap/Form";
 
 const initialState = { email: "", password: "", confirm_password: "" };
 const Register = () => {
-  const { auth } = useSelector((state) => state);
+  const { auth, alert } = useSelector((state) => state);
 
   const [userData, setUserData] = useState(initialState);
   const { email, password, confirm_password } = userData;
@@ -40,8 +40,8 @@ const Register = () => {
           onChange={onChangeInput}
           value={email}
         />
-        <Form.Text className="text-muted">
-          We'll never share your email with anyone else.
+        <Form.Text className="text-danger">
+          {alert.email ? alert.email : ""}
         </Form.Text>
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -53,6 +53,9 @@ const Register = () => {
           onChange={onChangeInput}
           value={password}
         />
+        <Form.Text className="text-danger">
+          {alert.password ? alert.password : ""}
+        </Form.Text>
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicConfirmPassword">
         <Form.Label>Confirm Password</Form.Label>
@@ -63,6 +66,9 @@ const Register = () => {
           onChange={onChangeInput}
           value={confirm_password}
         />
+        <Form.Text className="text-danger">
+          {alert.confirm_password ? alert.confirm_password : ""}
+        </Form.Text>
       </Form.Group>
       <Button variant="primary" type="submit">
         Register
