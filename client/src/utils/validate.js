@@ -1,5 +1,16 @@
-export const validateRegister = ({ email, password, confirm_password }) => {
+export const validateRegister = ({
+  displayName,
+  email,
+  password,
+  confirm_password,
+}) => {
   const err = {};
+
+  if (!displayName) {
+    err.displayName = "Please add your display name.";
+  } else if (displayName.length > 20) {
+    err.displayName = "Full name is up to 20 characters long.";
+  }
 
   if (!email) {
     err.email = "Please add your email.";

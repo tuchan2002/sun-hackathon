@@ -13,7 +13,7 @@ const authController = {
       return next(err);
     }
 
-    const { email, password } = req.body;
+    const { displayName, email, password } = req.body;
 
     try {
       const user = await Users.findOne({ email });
@@ -25,18 +25,19 @@ const authController = {
 
       const hashedPw = await bcrypt.hash(password, 12);
       const newUser = new Users({
+        displayName,
         email,
         password: hashedPw,
       });
 
       await newUser.save();
 
-      // const access_token = createAccessToken({ id: newUser.id });
+      const access_token = createAccessToken({ id: newUser.id });
       const refresh_token = createRefreshToken({ id: newUser.id });
 
       res.cookie("refreshtoken", refresh_token, {
         httpOnly: true,
-        path: "/api/refresh_token",
+        path: "/api/v1/auth/refresh_token",
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
 
@@ -44,6 +45,7 @@ const authController = {
         message: "Register success.",
         success: true,
         data: {
+          access_token,
           user: newUser,
         },
       });
@@ -85,7 +87,7 @@ const authController = {
 
       res.cookie("refreshtoken", refresh_token, {
         httpOnly: true,
-        path: "/api/refresh_token",
+        path: "/api/v1/auth/refresh_token",
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
 
@@ -109,7 +111,7 @@ const authController = {
   },
   logout: async (req, res, next) => {
     try {
-      res.clearCookie("refreshtoken", { path: "/api/refresh_token" });
+      res.clearCookie("refreshtoken", { path: "/api/v1/auth/refresh_token" });
       return res.json({ message: "Logged out." });
     } catch (err) {
       if (!err.statusCode) {
@@ -118,11 +120,11 @@ const authController = {
       next(err);
     }
   },
-  generateAccessToken: (req, res, next) => {
+  generateAccessToken: async (req, res, next) => {
     try {
       const refresh_token = req.cookies.refreshtoken;
       if (!refresh_token) {
-        const err = new Error("Please Login or Register");
+        const err = new Error("Please Login or Register.");
         err.statusCode = 400;
         throw err;
       }
@@ -130,14 +132,19 @@ const authController = {
       jwt.verify(
         refresh_token,
         process.env.REFRESH_TOKEN_SECRET,
-        (error, user) => {
+        async (error, result) => {
           if (error) {
             const err = new Error("Please Login or Register");
             err.statusCode = 400;
             throw err;
           }
-          const access_token = createAccessToken({ id: user.id });
 
+          const user = await Users.findById(result.id);
+          if (!user) {
+            return res.status(400).json({ msg: "This does not exist." });
+          }
+
+          const access_token = createAccessToken({ id: result.id });
           return res.json({
             message: "Generate access token success",
             success: true,

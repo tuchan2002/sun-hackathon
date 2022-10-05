@@ -5,12 +5,17 @@ import { register } from "../redux/actions/authAction";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-const initialState = { email: "", password: "", confirm_password: "" };
+const initialState = {
+  displayName: "",
+  email: "",
+  password: "",
+  confirm_password: "",
+};
 const Register = () => {
   const { auth, alert } = useSelector((state) => state);
 
   const [userData, setUserData] = useState(initialState);
-  const { email, password, confirm_password } = userData;
+  const { displayName, email, password, confirm_password } = userData;
 
   const onChangeInput = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
@@ -31,6 +36,19 @@ const Register = () => {
 
   return (
     <Form onSubmit={handleSubmit}>
+      <Form.Group className="mb-3" controlId="formBasicDisplayName">
+        <Form.Label>Display name</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter Display name"
+          name="displayName"
+          onChange={onChangeInput}
+          value={displayName}
+        />
+        <Form.Text className="text-danger">
+          {alert.displayName ? alert.displayName : ""}
+        </Form.Text>
+      </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Email address</Form.Label>
         <Form.Control
