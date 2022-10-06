@@ -64,7 +64,7 @@ app.use((error, req, res, next) => {
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
+    await mongoose.connect(process.env.MONGODB_URI_THINH);
     console.log("mongodb connected.");
   } catch (err) {
     console.log(err.message);
