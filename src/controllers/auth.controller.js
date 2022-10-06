@@ -1,7 +1,10 @@
-const Users = require("../models/userModels");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
+const { v4: uuidv4 } = require("uuid");
+
+const Users = require("../models/userModels");
+const sendMail = require("../helpers/sendMail");
 
 const authController = {
   register: async (req, res, next) => {
@@ -152,6 +155,111 @@ const authController = {
           });
         }
       );
+    } catch (err) {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    }
+  },
+  resetPassword: async (req, res, next) => {
+    const { email, urlNewPW } = req.body;
+    const resetToken = uuidv4();
+
+    try {
+      const user = await Users.findOne({ email });
+      if (!user) {
+        const err = new Error("Email address already exists.");
+        err.statusCode = 401;
+        throw err;
+      }
+
+      user.resetToken = resetToken;
+      user.resetTokenExpiration = Date.now() + 3600000;
+
+      const updateUser = await user.save();
+      const sendedData = await sendMail({
+        to: email,
+        from: "thinhtheblues1102@gmail.com",
+        subject: "Password reset",
+        // use urlNewPW
+        html: `
+            <p>You requested a password reset</p>
+            <p>Click this <a href="http://localhost:8080/api/v1/home/${updateUser.resetToken}">link</a> to set a new password.</p>
+          `,
+      });
+
+      res.status(200).json({
+        message: "check email",
+        success: true,
+        sendedData,
+      });
+    } catch (err) {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    }
+  },
+  newPassword: async (req, res, next) => {
+    const { newPassword, resetToken } = req.body;
+
+    try {
+      const user = await Users.findOne({
+        resetToken: resetToken,
+        resetTokenExpiration: { $gt: Date.now() },
+      });
+
+      if (!user) {
+        const err = new Error("Reset password false. Reset token expriration");
+        err.statusCode = 400;
+        throw err;
+      }
+
+      const hashedPw = await bcrypt.hash(newPassword, 12);
+      user.password = hashedPw;
+      user.resetToken = null;
+      user.resetTokenExpiration = null;
+
+      const newUser = await user.save();
+
+      res.status(200).json({
+        message: "Reset password success.",
+        success: true,
+        data: {
+          user: newUser,
+        },
+      });
+    } catch (err) {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    }
+  },
+  changePassword: async (req, res, next) => {
+    const { newPassword, oldPassword } = req.body;
+
+    try {
+      const user = await Users.findById(req.userId);
+      if (!user) {
+      }
+
+      const isMatch = await bcrypt.compare(oldPassword, user.password);
+      if (!isMatch) {
+        const err = new Error("Incorrect old password.");
+        err.statusCode = 401;
+        throw err;
+      }
+
+      const hashedPw = await bcrypt.hash(newPassword, 12);
+      user.password = hashedPw;
+
+      await user.save();
+      res.status(200).json({
+        message: "Change password success.",
+        success: true,
+      });
     } catch (err) {
       if (!err.statusCode) {
         err.statusCode = 500;
