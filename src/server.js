@@ -52,6 +52,7 @@ app.use("/res/images", express.static(path.join(__dirname, "res", "images")));
 app.use("/api/v1", appRouteV1);
 
 app.use((error, req, res, next) => {
+  console.log("ERROR!!!");
   const status = error.statusCode || 500;
   const message = error.message;
   const data = error.data;
