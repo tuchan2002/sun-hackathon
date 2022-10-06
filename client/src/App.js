@@ -23,8 +23,8 @@ function App() {
 
   return (
     <Router>
-      <Alert />
       {auth.token && <NavbarMenu />}
+      <Alert />
       <div className="container">
         <Routes>
           <Route path="/" element={auth.token ? <Home /> : <Login />} />
