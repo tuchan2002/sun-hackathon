@@ -18,7 +18,6 @@ const connectDB = async () => {
     process.exit(1);
   }
 };
-
 connectDB();
 
 app.use("/api", require("./routes/authRouter"));
