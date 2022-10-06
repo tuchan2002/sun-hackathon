@@ -12,7 +12,7 @@ const { v4: uuidv4 } = require("uuid");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 
-const appRouteV1 = require("./routes/router-v1");
+const appRouteV1 = require("./routes/router.v1");
 
 const port = process.env.PORT || 5000;
 const app = express();
