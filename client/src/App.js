@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { refreshToken } from "./redux/actions/authAction";
 import Alert from "./components/alert";
 import PrivateRouter from "./customRouter/PrivateRouter";
+import NavbarMenu from "./components/NavbarMenu";
 
 function App() {
   const { auth } = useSelector((state) => state);
@@ -22,6 +23,7 @@ function App() {
   return (
     <Router>
       <Alert />
+      {auth.token && <NavbarMenu />}
       <div className="container">
         <Routes>
           <Route path="/" element={auth.token ? <Home /> : <Login />} />

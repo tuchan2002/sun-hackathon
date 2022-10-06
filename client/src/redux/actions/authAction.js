@@ -1,10 +1,11 @@
 import { AUTH, ALERT } from "../types";
 import { postDataAPI } from "../../utils/fetchData";
+import { validateRegister } from "../../utils/validate";
 
 export const login = (data) => async (dispatch) => {
   try {
     dispatch({ type: ALERT, payload: { loading: true } });
-    const res = await postDataAPI("login", data);
+    const res = await postDataAPI("auth/login", data);
     dispatch({
       type: AUTH,
       payload: {
@@ -17,14 +18,14 @@ export const login = (data) => async (dispatch) => {
     dispatch({
       type: ALERT,
       payload: {
-        success: res.data.msg,
+        success: res.data.message,
       },
     });
   } catch (err) {
     dispatch({
       type: ALERT,
       payload: {
-        error: err.response.data.msg,
+        error: err.response.data.message,
       },
     });
   }
@@ -36,7 +37,7 @@ export const refreshToken = () => async (dispatch) => {
     dispatch({ type: ALERT, payload: { loading: true } });
 
     try {
-      const res = await postDataAPI("refresh_token");
+      const res = await postDataAPI("auth/refresh_token");
       dispatch({
         type: AUTH,
         payload: {
@@ -50,7 +51,7 @@ export const refreshToken = () => async (dispatch) => {
       dispatch({
         type: ALERT,
         payload: {
-          error: err.response.data.msg,
+          error: err.response.data.message,
         },
       });
     }
@@ -58,10 +59,14 @@ export const refreshToken = () => async (dispatch) => {
 };
 
 export const register = (data) => async (dispatch) => {
+  const isCheck = validateRegister(data);
+  if (isCheck.errLength > 0) {
+    return dispatch({ type: ALERT, payload: isCheck.errMsg });
+  }
   try {
     dispatch({ type: ALERT, payload: { loading: true } });
 
-    const res = await postDataAPI("register", data);
+    const res = await postDataAPI("auth/register", data);
     dispatch({
       type: AUTH,
       payload: {
@@ -74,14 +79,14 @@ export const register = (data) => async (dispatch) => {
     dispatch({
       type: ALERT,
       payload: {
-        success: res.data.msg,
+        success: res.data.message,
       },
     });
   } catch (err) {
     dispatch({
       type: ALERT,
       payload: {
-        error: err.response.data.msg,
+        error: err.response.data.message,
       },
     });
   }
@@ -90,13 +95,13 @@ export const register = (data) => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   try {
     localStorage.removeItem("loggedIn");
-    await postDataAPI("logout");
+    await postDataAPI("auth/logout");
     window.location.href = "/";
   } catch (err) {
     dispatch({
       type: ALERT,
       payload: {
-        error: err.response.data.msg,
+        error: err.response.data.message,
       },
     });
   }

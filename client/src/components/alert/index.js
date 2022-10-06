@@ -10,9 +10,9 @@ const Alert = () => {
     <div>
       {alert.loading && <Loading />}
 
-      {alert.error && <h1>ERROR</h1>}
+      {alert.error && <h1>{alert.error}</h1>}
 
-      {alert.success && <h1>SUCCESS</h1>}
+      {alert.success && <h1>{alert.success} </h1>}
     </div>
   );
 };
