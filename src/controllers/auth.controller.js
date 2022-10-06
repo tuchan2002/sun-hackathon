@@ -185,12 +185,12 @@ const authController = {
         // use urlNewPW
         html: `
             <p>You requested a password reset</p>
-            <p>Click this <a href="http://localhost:8080/api/v1/home/${updateUser.resetToken}">link</a> to set a new password.</p>
+            <p>Click this <a href="${urlNewPW}/${updateUser.resetToken}">link</a> to set a new password.</p>
           `,
       });
 
       res.status(200).json({
-        message: "check email",
+        message: "Please check your email.",
         success: true,
         sendedData,
       });
@@ -228,6 +228,7 @@ const authController = {
         success: true,
         data: {
           user: newUser,
+          password: "",
         },
       });
     } catch (err) {

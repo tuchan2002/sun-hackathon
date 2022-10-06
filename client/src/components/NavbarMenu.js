@@ -27,12 +27,12 @@ const NavbarMenu = () => {
             />
           </Form>
         </Nav>
-        <Nav style={{ alignItems: "center" }}>
+        <Nav style={{ alignItems: "center", gap: "12px" }}>
           <Nav.Link as={Link} to="/">
-            Home
+            ホーム
           </Nav.Link>
           <Nav.Link as={Link} to="/create_post">
-            CreatePost
+            ポストの作成
           </Nav.Link>
           <NavDropdown
             title={
@@ -43,16 +43,17 @@ const NavbarMenu = () => {
               />
             }
             id="collasible-nav-dropdown"
+            align="end"
           >
             <NavDropdown.Item as={Link} to={`/profile`}>
-              Profile
+              プロフィール
             </NavDropdown.Item>
             <NavDropdown.Item
               as={Link}
               to="/"
               onClick={() => dispatch(logout())}
             >
-              Logout
+              ログアウト
             </NavDropdown.Item>
           </NavDropdown>
         </Nav>
