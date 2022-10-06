@@ -1,6 +1,10 @@
 import { AUTH, ALERT } from "../types";
 import { postDataAPI } from "../../utils/fetchData";
-import { validateRegister, validateSetNewPassword } from "../../utils/validate";
+import {
+  validateChangePassword,
+  validateRegister,
+  validateSetNewPassword,
+} from "../../utils/validate";
 
 export const login = (data) => async (dispatch) => {
   try {
@@ -151,3 +155,35 @@ export const setNewPassword = (data) => async (dispatch) => {
     });
   }
 };
+
+export const changePassword =
+  ({ changePasswordData, auth }) =>
+  async (dispatch) => {
+    console.log(changePasswordData);
+    const isCheck = validateChangePassword(changePasswordData);
+    console.log(isCheck);
+    if (isCheck.errLength > 0) {
+      return dispatch({ type: ALERT, payload: isCheck.errMsg });
+    }
+    try {
+      dispatch({ type: ALERT, payload: { loading: true } });
+      const res = await postDataAPI(
+        "auth/change_password",
+        changePasswordData,
+        auth.token
+      );
+      dispatch({
+        type: ALERT,
+        payload: {
+          success: res.message,
+        },
+      });
+    } catch (err) {
+      dispatch({
+        type: ALERT,
+        payload: {
+          error: err.response.data.message,
+        },
+      });
+    }
+  };
