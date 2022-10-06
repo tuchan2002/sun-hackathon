@@ -30,40 +30,48 @@ const Login = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Email address</Form.Label>
-        <Form.Control
-          type="email"
-          placeholder="Enter email"
-          name="email"
-          onChange={onChangeInput}
-          value={email}
-        />
-      </Form.Group>
-
-      <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Label>Password</Form.Label>
-        <Form.Control
-          type="password"
-          placeholder="Password"
-          name="password"
-          onChange={onChangeInput}
-          value={password}
-        />
-      </Form.Group>
-      <Button
-        variant="primary"
-        type="submit"
-        disabled={email && password ? false : true}
+    <div>
+      <h1 style={{ textAlign: "center" }}>ログイン</h1>
+      <Form
+        onSubmit={handleSubmit}
+        style={{ display: "flex", flexDirection: "column", gap: "16px" }}
       >
-        Login
-      </Button>
-      <div className="mb-3">
-        <span>You don't have an account? </span>
-        <Link to="/register">Register Now</Link>
-      </div>
-    </Form>
+        <Form.Group controlId="formBasicEmail">
+          <Form.Label>メールアドレス</Form.Label>
+          <Form.Control
+            type="email"
+            placeholder="Enter email"
+            name="email"
+            onChange={onChangeInput}
+            value={email}
+          />
+        </Form.Group>
+        <Form.Group controlId="formBasicPassword">
+          <Form.Label>パスワード</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder="Password"
+            name="password"
+            onChange={onChangeInput}
+            value={password}
+          />
+        </Form.Group>
+        <Button
+          variant="primary"
+          type="submit"
+          disabled={email && password ? false : true}
+        >
+          ログイン
+        </Button>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div>
+            <span>アカウントを持っていませんか？　</span>
+            <Link to="/register">今すぐ登録！</Link>
+          </div>
+          <Link to="/reset_password">パスワードをお忘れの方はこちら</Link>
+        </div>
+      </Form>
+    </div>
   );
 };
 
