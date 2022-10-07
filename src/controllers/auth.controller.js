@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
 const { v4: uuidv4 } = require("uuid");
 
-const Users = require("../models/userModels");
+const Users = require("../models/userModel");
 const sendMail = require("../helpers/sendMail");
 
 const authController = {
