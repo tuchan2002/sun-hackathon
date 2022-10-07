@@ -12,6 +12,8 @@ import NavbarMenu from "./components/NavbarMenu";
 import ResetPassword from "./pages/reset_password";
 import NewPassword from "./pages/new_password";
 import SidebarMenu from "./components/SidebarMenu";
+import CreateFlashcard from "./pages/Flashcard/create_flashcard";
+import EditFlashcard from "./pages/Flashcard/edit_flashcard";
 
 function App() {
   const { auth } = useSelector((state) => state);
@@ -22,6 +24,7 @@ function App() {
     dispatch(refreshToken());
   }, [dispatch]);
 
+<<<<<<< HEAD
   return (
     <Router>
       <div style={{ display: "flex" }}>
@@ -61,6 +64,60 @@ function App() {
       </div>
     </Router>
   );
+=======
+    return (
+        <Router>
+            <div style={{ display: "flex" }}>
+                {auth.token && <SidebarMenu />}
+                <div className="container">
+                    {auth.token && <NavbarMenu />}
+                    <Alert />
+                    <div className="container">
+                        <Routes>
+                            <Route
+                                path="/"
+                                element={auth.token ? <Home /> : <Login />}
+                            />
+                            <Route path="/register" element={<Register />} />
+                            <Route
+                                path="/reset_password"
+                                element={<ResetPassword />}
+                            />
+                            <Route
+                                path="/new_password/:resetToken"
+                                element={<NewPassword />}
+                            />
+                            <Route
+                                path="/create_flashcard"
+                                element={<CreateFlashcard />}
+                            />
+                            <Route
+                                path="/edit_flashcard"
+                                element={<EditFlashcard />}
+                            />
+                            <Route
+                                path="/:page"
+                                element={
+                                    <PrivateRouter>
+                                        <PageRender />
+                                    </PrivateRouter>
+                                }
+                            />
+                            <Route
+                                path="/:page/:id"
+                                element={
+                                    <PrivateRouter>
+                                        <PageRender />
+                                    </PrivateRouter>
+                                }
+                            />
+                        </Routes>
+                    </div>
+                </div>
+            </div>
+        </Router>
+    );
+>>>>>>> feat: format Flashcard Page
 }
 
 export default App;
