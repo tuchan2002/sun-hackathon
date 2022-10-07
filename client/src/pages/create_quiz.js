@@ -3,17 +3,24 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { IoTrashOutline } from "react-icons/io5";
 
-const questionInitial = {
-  content: "",
-  answers: [{ content: "" }, { content: "" }, { content: "" }, { content: "" }],
-  result: 0,
-};
 const CreateQuiz = () => {
   const [quizTitle, setQuizTitle] = useState("");
   const [questions, setQuestions] = useState([]);
 
   const handleAddQuestion = () => {
-    setQuestions([...questions, { ...questionInitial }]);
+    setQuestions([
+      ...questions,
+      {
+        content: "",
+        answers: [
+          { content: "" },
+          { content: "" },
+          { content: "" },
+          { content: "" },
+        ],
+        result: 0,
+      },
+    ]);
   };
 
   const onChangeQuestionInputContent = (e, index) => {
@@ -45,6 +52,7 @@ const CreateQuiz = () => {
     console.log("submit");
   };
 
+  console.log(questions);
   return (
     <div
       style={{
@@ -94,6 +102,7 @@ const CreateQuiz = () => {
       </Form.Group>
 
       {/* questions */}
+
       {questions.map((question, index) => (
         <Form
           key={index}
