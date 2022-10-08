@@ -92,7 +92,7 @@ const NavbarMenu = () => {
                                 to="/"
                                 onClick={() => dispatch(logout())}
                             >
-                                ログアウト
+                                Logout
                             </NavDropdown.Item>
                         </NavDropdown>
                         <NavDropdown
