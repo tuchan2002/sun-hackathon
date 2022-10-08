@@ -80,7 +80,7 @@ const CreateFlashcard = () => {
                     <Button
                         variant="secondary"
                         disabled={false}
-                        onClick={() => navigate("/my-library")}
+                        onClick={() => navigate("/mylibrary")}
                     >
                         Cancel
                     </Button>

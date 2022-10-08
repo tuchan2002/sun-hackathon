@@ -20,6 +20,11 @@ const flashcardReducer = (state = initialState, action) => {
                 ...state,
                 flashcard: action.payload,
             };
+        case FLASHCARD.GET_FLASHCARDS:
+            return {
+                ...state,
+                flashcards: action.payload,
+            };
         case FLASHCARD.DELETE_FLASHCARD:
             return {
                 ...state,
