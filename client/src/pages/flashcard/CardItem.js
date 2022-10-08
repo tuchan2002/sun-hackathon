@@ -1,8 +1,9 @@
 import Card from "react-bootstrap/Card";
+import classes from "./CardItem.module.css";
 
 const CardItem = ({ japaneseWord, vietnameseWord }) => {
   return (
-    <Card>
+    <Card bsPrefix={classes["card"]}>
       <Card.Header>{japaneseWord}</Card.Header>
       <Card.Body>
         <blockquote className="blockquote mb-0">

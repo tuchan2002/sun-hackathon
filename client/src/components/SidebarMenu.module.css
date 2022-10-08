@@ -23,14 +23,15 @@
   align-items: center;
   text-decoration: none;
   padding: 10px 10px;
-  border-radius: 10px;
+  border-radius: 5px;
   gap: 10px;
   background-color: transparent;
   transition: background-color 0.25 linear;
 }
 
 .link:hover {
-  background-color: #d0ebff;
+  /* background-color: #d0ebff; */
+  background-color: #e9ecef;
 }
 
 .link h5 {

@@ -7,6 +7,7 @@ import CardItem from "./CardItem";
 import { useNavigate, useParams } from "react-router-dom";
 import { deleteQuizById, getQuizById } from "../../redux/actions/quizAction";
 import { useEffect, useState } from "react";
+import classes from "../flashcard/BoxTitle.module.css";
 
 const QuizDetail = () => {
   const navigate = useNavigate();
@@ -24,30 +25,31 @@ const QuizDetail = () => {
 
   return (
     <>
-      <Card>
-        <Card.Header> {quiz.quiz?.title}</Card.Header>
-        <Card.Body>
-          <Card.Title style={{ marginBottom: "36px" }}>
+      <Card bsPrefix={classes["card"]}>
+        <Card.Header bsPrefix={classes["card-header"]}>
+          {" "}
+          {quiz.quiz?.title}
+        </Card.Header>
+        <Card.Body bsPrefix={classes["card-body"]}>
+          <Card.Title bsPrefix={classes["title"]}>
             {" "}
             {quiz.quiz?.title}
           </Card.Title>
-          <Container>
+          <Container bsPrefix={classes["containerr"]}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <div>
-                <span>
-                  <img
-                    src={auth.user.avatar}
-                    alt="avatar"
-                    style={{
-                      width: "36px",
-                      height: "36px",
-                      borderRadius: "100px",
-                      marginRight: "8px",
-                    }}
-                  />
-                  {auth.user.displayName}
-                </span>
-              </div>
+              <span>
+                <img
+                  src={auth.user.avatar}
+                  alt="avatar"
+                  style={{
+                    width: "36px",
+                    height: "36px",
+                    borderRadius: "100px",
+                    marginRight: "8px",
+                  }}
+                />
+                {auth.user.displayName}
+              </span>
               <div>
                 <Button
                   variant="primary"
@@ -81,7 +83,7 @@ const QuizDetail = () => {
           {quiz.quiz?.questions?.length} Questions
         </h3>
       </Container>
-      <Container style={{ marginTop: "16px" }}>
+      <Container style={{ marginTop: "16px", paddingLeft: 0, paddingRight: 0 }}>
         {quiz.quiz?.questions?.map((question, index) => (
           <CardItem
             key={index}
