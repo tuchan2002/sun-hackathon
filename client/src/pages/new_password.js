@@ -27,7 +27,7 @@ const NewPassword = () => {
     dispatch(setNewPassword({ ...newPasswordData, resetToken }));
   };
   return (
-    <div>
+    <div style={{ maxWidth: "700px", margin: "0 auto" }}>
       <h1 style={{ textAlign: "center" }}>パスワード設定</h1>
       <Form
         onSubmit={handleSubmit}

@@ -1,0 +1,46 @@
+.project-name {
+  color: #228be6;
+  padding: 5px 10px;
+}
+
+.flex-column {
+  width: 200px;
+  min-height: 756px;
+  padding: 10px 5px;
+  border-right: 2px solid #ced4da;
+}
+
+.links {
+  padding-top: 20px;
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 10px 10px;
+  border-radius: 10px;
+  gap: 10px;
+  background-color: transparent;
+  transition: background-color 0.25 linear;
+}
+
+.link:hover {
+  background-color: #d0ebff;
+}
+
+.link h5 {
+  color: #228be6;
+  margin: 0;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.icon-nav {
+  font-size: 18px;
+}

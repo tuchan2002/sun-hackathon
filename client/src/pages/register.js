@@ -35,7 +35,7 @@ const Register = () => {
   };
 
   return (
-    <div>
+    <div style={{ maxWidth: "700px", margin: "0 auto" }}>
       <h1 style={{ textAlign: "center" }}>登録</h1>
       <Form
         onSubmit={handleSubmit}
@@ -96,7 +96,7 @@ const Register = () => {
         <Button variant="primary" type="submit">
           登録
         </Button>
-        <div>
+        <div style={{ fontSize: "14px" }}>
           <span>すでにアカウントをお持ちですか？　</span>
           <Link to="/">今すぐログイン</Link>
         </div>

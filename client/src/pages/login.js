@@ -30,7 +30,7 @@ const Login = () => {
   };
 
   return (
-    <div>
+    <div style={{ maxWidth: "700px", margin: "0 auto" }}>
       <h1 style={{ textAlign: "center" }}>ログイン</h1>
       <Form
         onSubmit={handleSubmit}
@@ -64,11 +64,13 @@ const Login = () => {
           ログイン
         </Button>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div>
+          <div style={{ fontSize: "14px" }}>
             <span>アカウントを持っていませんか？　</span>
             <Link to="/register">今すぐ登録！</Link>
           </div>
-          <Link to="/reset_password">パスワードをお忘れの方はこちら</Link>
+          <Link to="/reset_password" style={{ fontSize: "14px" }}>
+            パスワードをお忘れの方はこちら
+          </Link>
         </div>
       </Form>
     </div>
