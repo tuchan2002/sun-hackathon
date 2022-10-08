@@ -18,7 +18,7 @@ appRoute.use("/auth", authRoute);
 
 appRoute.use("/upload", uploadRoute);
 
-appRoute.use("/quiz", quizRoute);
+appRoute.use("/quizzes", quizRoute);
 
 appRoute.use("/question", questionRoute);
 

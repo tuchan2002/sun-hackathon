@@ -2,14 +2,31 @@ const Quizzes = require("../models/quizModel");
 const Questions = require("../models/questionModel");
 
 const getAllQuiz = async (req, res, next) => {
+  const page = req.query.page;
   try {
-    const allQuiz = await Quizzes.find().populate("questions");
+    const amount = await Quizzes.count();
+    const links = [];
+
+    const pages = amount / 6;
+    for (let i = 1; i <= pages + 1; i++) {
+      links.push({
+        url: `http://localhost:8080/api/v1/quizzes?page=${i}`,
+        label: `${i}`,
+      });
+    }
+
+    const pageOption = getPagination(page);
+    const allQuiz = await Quizzes.find()
+      .skip(pageOption.skip)
+      .limit(pageOption.limit)
+      .populate("questions");
 
     res.status(201).json({
       message: "",
       success: true,
       data: {
         allQuiz,
+        links,
       },
     });
   } catch (err) {
@@ -202,6 +219,13 @@ const quizController = {
   addQuiz,
   editQuiz,
   deleteQuiz,
+};
+
+const getPagination = (page, size) => {
+  if (page <= 0) page = 1;
+  const limit = size ? +size : 6;
+  const skip = page ? (+page - 1) * limit : 0;
+  return { limit, skip };
 };
 
 module.exports = quizController;
