@@ -4,6 +4,13 @@ const Schema = mongoose.Schema;
 const quizSchema = new Schema({
   title: {
     type: String,
+<<<<<<< HEAD
+=======
+    require: true
+  },
+  User: {
+    type: Schema.Types.ObjectId,
+>>>>>>> 37e0f1e (feat: add-flashcard-feature)
     required: true,
   },
   user: {
