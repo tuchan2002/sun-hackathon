@@ -2,9 +2,14 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { IoTrashOutline } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import { createQuiz } from "../redux/actions/quizAction";
 
 const CreateQuiz = () => {
-  const [quizTitle, setQuizTitle] = useState("");
+  const { auth, quiz } = useSelector((state) => state);
+  const dispatch = useDispatch();
+
+  const [title, setTitle] = useState("");
   const [questions, setQuestions] = useState([]);
 
   const handleAddQuestion = () => {
@@ -12,12 +17,7 @@ const CreateQuiz = () => {
       ...questions,
       {
         content: "",
-        answers: [
-          { content: "" },
-          { content: "" },
-          { content: "" },
-          { content: "" },
-        ],
+        answers: ["", "", "", ""],
         result: 0,
       },
     ]);
@@ -30,9 +30,8 @@ const CreateQuiz = () => {
   };
 
   const onChangeAnswerInputContent = (e, questionIndex, answerIndex) => {
-    console.log(e.target.value, questionIndex);
     const temp = [...questions];
-    temp[questionIndex].answers[answerIndex].content = e.target.value;
+    temp[questionIndex].answers[answerIndex] = e.target.value;
     setQuestions(temp);
   };
 
@@ -48,11 +47,10 @@ const CreateQuiz = () => {
   };
 
   const handleSubmit = () => {
-    // {quizTitle, questions}
+    dispatch(createQuiz({ data: { title, questions }, auth }));
     console.log("submit");
   };
 
-  console.log(questions);
   return (
     <div
       style={{
@@ -96,8 +94,8 @@ const CreateQuiz = () => {
         <Form.Control
           type="text"
           placeholder="Question title"
-          value={quizTitle}
-          onChange={(e) => setQuizTitle(e.target.value)}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
         />
       </Form.Group>
 
@@ -152,7 +150,7 @@ const CreateQuiz = () => {
               <Form.Control
                 type="text"
                 placeholder="Answer 1 content"
-                value={question.answers[0].content}
+                value={question.answers[0]}
                 onChange={(e) => onChangeAnswerInputContent(e, index, 0)}
               />
               <Form.Check
@@ -174,7 +172,7 @@ const CreateQuiz = () => {
               <Form.Control
                 type="text"
                 placeholder="Answer 2 content"
-                value={question.answers[1].content}
+                value={question.answers[1]}
                 onChange={(e) => onChangeAnswerInputContent(e, index, 1)}
               />
               <Form.Check
@@ -196,7 +194,7 @@ const CreateQuiz = () => {
               <Form.Control
                 type="text"
                 placeholder="Answer 3 content"
-                value={question.answers[2].content}
+                value={question.answers[2]}
                 onChange={(e) => onChangeAnswerInputContent(e, index, 2)}
               />
               <Form.Check
@@ -218,7 +216,7 @@ const CreateQuiz = () => {
               <Form.Control
                 type="text"
                 placeholder="Answer 4 content"
-                value={question.answers[3].content}
+                value={question.answers[3]}
                 onChange={(e) => onChangeAnswerInputContent(e, index, 3)}
               />
               <Form.Check

@@ -1,2 +1,10 @@
 export const AUTH = "AUTH";
 export const ALERT = "ALERT";
+export const QUIZ = {
+  CREATE_QUIZ: "CREATE_QUIZ",
+  LOADING_QUIZ: "LOADING_QUIZ",
+  GET_QUIZS: "GET_QUIZS",
+  UPDATE_QUIZ: "UPDATE_QUIZ",
+  GET_QUIZ: "GET_QUIZ",
+  DELETE_QUIZ: "DELETE_QUIZ",
+};

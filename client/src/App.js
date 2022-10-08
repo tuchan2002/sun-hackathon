@@ -14,57 +14,51 @@ import NewPassword from "./pages/new_password";
 import SidebarMenu from "./components/SidebarMenu";
 
 function App() {
-    const { auth } = useSelector((state) => state);
+  const { auth } = useSelector((state) => state);
 
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(refreshToken());
-    }, [dispatch]);
-    return (
-        <Router>
-            <div style={{ display: "flex" }}>
-                {auth.token && <SidebarMenu />}
-                <div className="container">
-                    {auth.token && <NavbarMenu />}
-                    <Alert />
-                    <div className="container">
-                        <Routes>
-                            <Route
-                                path="/"
-                                element={auth.token ? <Home /> : <Login />}
-                            />
-                            <Route path="/register" element={<Register />} />
-                            <Route
-                                path="/reset_password"
-                                element={<ResetPassword />}
-                            />
-                            <Route
-                                path="/new_password/:resetToken"
-                                element={<NewPassword />}
-                            />
-                            <Route
-                                path="/:page"
-                                element={
-                                    <PrivateRouter>
-                                        <PageRender />
-                                    </PrivateRouter>
-                                }
-                            />
-                            <Route
-                                path="/:page/:id"
-                                element={
-                                    <PrivateRouter>
-                                        <PageRender />
-                                    </PrivateRouter>
-                                }
-                            />
-                        </Routes>
-                    </div>
-                </div>
-            </div>
-        </Router>
-    );
+  useEffect(() => {
+    dispatch(refreshToken());
+  }, [dispatch]);
+  return (
+    <Router>
+      <div style={{ display: "flex" }}>
+        {auth.token && <SidebarMenu />}
+        <div style={{ width: "100%" }}>
+          {auth.token && <NavbarMenu />}
+          <Alert />
+          <div style={{ padding: "20px" }}>
+            <Routes>
+              <Route path="/" element={auth.token ? <Home /> : <Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/reset_password" element={<ResetPassword />} />
+              <Route
+                path="/new_password/:resetToken"
+                element={<NewPassword />}
+              />
+              <Route
+                path="/:page"
+                element={
+                  <PrivateRouter>
+                    <PageRender />
+                  </PrivateRouter>
+                }
+              />
+              <Route
+                path="/:page/:id"
+                element={
+                  <PrivateRouter>
+                    <PageRender />
+                  </PrivateRouter>
+                }
+              />
+            </Routes>
+          </div>
+        </div>
+      </div>
+    </Router>
+  );
 }
 
 export default App;
