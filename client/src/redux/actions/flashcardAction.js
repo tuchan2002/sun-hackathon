@@ -23,7 +23,7 @@ export const createFlashcard =
                     success: res.message,
                 },
             });
-            window.location.href = "/my_library";
+            window.location.href = "/mylibrary";
         } catch (err) {
             dispatch({
                 type: ALERT,
@@ -44,6 +44,37 @@ export const getAllFlashcard =
             dispatch({
                 type: FLASHCARD.GET_FLASHCARD,
                 payload: res.data.flashcard,
+            });
+
+            dispatch({
+                type: ALERT,
+                payload: {
+                    success: res.message,
+                },
+            });
+        } catch (err) {
+            dispatch({
+                type: ALERT,
+                payload: {
+                    error: err.response.data.message,
+                },
+            });
+        }
+    };
+
+export const getFlashcardsByUserId =
+    ({ auth }) =>
+    async (dispatch) => {
+        try {
+            dispatch({ type: ALERT, payload: { loading: true } });
+            const res = await getDataAPI(
+                `flashcards/user/${auth.user._id}`,
+                auth.token
+            );
+
+            dispatch({
+                type: FLASHCARD.GET_FLASHCARDS,
+                payload: res.data.flashcards,
             });
 
             dispatch({
@@ -133,7 +164,7 @@ export const updateFlashcard =
                     success: res.message,
                 },
             });
-            window.location.href = "/my_library";
+            window.location.href = "/mylibrary";
         } catch (err) {
             dispatch({
                 type: ALERT,
