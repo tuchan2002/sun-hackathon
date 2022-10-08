@@ -11,16 +11,11 @@ const getUserProfile = async (req, res, next) => {
       throw err;
     }
 
-    const userProfile = {
-      displayName: user.displayName,
-      ...user.profile,
-    };
-
     res.status(200).json({
       message: "",
       success: true,
       data: {
-        userProfile,
+        user,
       },
     });
   } catch (err) {
@@ -32,24 +27,23 @@ const getUserProfile = async (req, res, next) => {
 };
 
 const addUserProfile = async (req, res, next) => {
-  const profileData = req.body;
+  const { university, graduationYear, avatar } = req.body;
   const userId = req.userId;
   try {
-    const user = await Users.findById(userId);
-    if (!user) {
-      const err = new Error("Could not find user.");
-      err.statusCode = 404;
-      throw err;
-    }
-
-    user.profile = profileData;
-    const savedUser = await user.save();
+    const updateUser = await Users.updateOne(
+      { _id: userId },
+      {
+        university,
+        graduationYear,
+        avatar,
+      }
+    );
 
     res.status(301).json({
       message: "",
       success: true,
       data: {
-        savedUser,
+        updateUser,
       },
     });
   } catch (err) {

@@ -31,24 +31,16 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
-    profile: {
-      university: {
-        type: String,
-      },
-      graduationYear: {
-        type: Number,
-      },
-      birthday: {
-        type: Date,
-      },
-      gender: {
-        type: Boolean,
-      },
-      avatar: {
-        type: String,
-        default:
-          "https://res.cloudinary.com/dxnfba463/image/upload/v1664374422/images_iepweu.png",
-      },
+    university: {
+      type: String,
+    },
+    graduationYear: {
+      type: Number,
+    },
+    avatar: {
+      type: String,
+      default:
+        "https://res.cloudinary.com/dxnfba463/image/upload/v1664374422/images_iepweu.png",
     },
     history: [
       {
