@@ -55,7 +55,19 @@ const FlashcardDetail = () => {
                                 </span>
                             </Col>
                             <Col>
-                                <Button variant="primary">Learn</Button>{" "}
+                                <Button
+                                    onClick={() => {
+                                        navigate(
+                                            `/do_flashcard/${flashcard.flashcard?._id}`,
+                                            {
+                                                replace: true,
+                                            }
+                                        );
+                                    }}
+                                    variant="primary"
+                                >
+                                    Learn
+                                </Button>{" "}
                                 <Button variant="info">Share</Button>{" "}
                                 <Button variant="primary">Edit</Button>{" "}
                                 <Button
