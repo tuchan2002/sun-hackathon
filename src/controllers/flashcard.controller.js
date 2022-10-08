@@ -5,26 +5,12 @@ const User = require("../models/userModel");
 const flashcardController = {
     getAllFlashcards: async (req, res, next) => {
         try {
-            const page = req.query.page;
-            if (+page <= 0) {
-                page = 1;
-            }
-            const amount = await Flashcard.count();
-            const links = [];
-
-            const pages = amount / 6;
-            for (let i = 1; i <= pages + 1; i++) {
-                links.push({
-                    url: `http://localhost:8080/api/v1/flashcards?page=${i}`,
-                    label: `${i}`,
-                });
-            }
-
-            const pageOption = getPagination(page);
             const allFlashcard = await Flashcard.find()
-                .skip(pageOption.skip)
-                .limit(pageOption.limit)
-                .populate("Cards");
+                .populate("Cards")
+                .populate({
+                    path: "User",
+                    select: "displayName avatar createdAt",
+                });
 
             if (!allFlashcard) {
                 const err = new Error("Can not find any flashcard");
@@ -36,7 +22,6 @@ const flashcardController = {
                 success: true,
                 data: {
                     allFlashcard,
-                    links,
                 },
             });
         } catch (err) {

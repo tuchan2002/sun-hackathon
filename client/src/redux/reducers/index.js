@@ -3,7 +3,9 @@ import alertReducer from "./alertReducer";
 import authReducer from "./authReducer";
 import flashcardReducer from "./flashcardReducer";
 import historyReducer from "./historyReducer";
+import postReducer from "./postReducer";
 import quizReducer from "./quizReducer";
+import socketReducer from "./socketReducer";
 
 export default combineReducers({
   auth: authReducer,
@@ -11,4 +13,5 @@ export default combineReducers({
   quiz: quizReducer,
   flashcard: flashcardReducer,
   history: historyReducer,
+  socket: socketReducer,
 });

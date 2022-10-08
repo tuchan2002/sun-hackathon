@@ -67,6 +67,65 @@ app.use((error, req, res, next) => {
   });
 });
 
+const http = require("http").createServer(app);
+const io = require("socket.io")(http);
+
+let users = [];
+io.on("connection", (socket) => {
+  console.log(socket.id + " connected!");
+
+  // lang nghe du lieu tu client
+  socket.on("joinRoom", ({ userId, roomId }) => {
+    console.log("userId, roomId ", userId, roomId);
+    const user = { userId: userId, roomId: roomId };
+    console.log(0, users);
+    const check = users.every((user) => user.userId !== userId);
+    console.log("check", check);
+    if (check) {
+      users.push(user);
+      console.log(1);
+      socket.join(user.roomId); // user hien tai se join vao room
+    } else {
+      users.map((user) => {
+        if (user.userId === userId) {
+          console.log(0.5);
+          if (user.roomId !== roomId) {
+            socket.leave(user.roomId);
+            console.log(2);
+            socket.join(roomId);
+            user.roomId = roomId;
+          }
+        }
+      });
+    }
+    console.log("users array", users);
+    console.log(socket.adapter.rooms);
+  });
+
+  socket.on("createComment", async (data) => {
+    console.log("datadata", data);
+    const { title, content, postId, createdAt } = data;
+
+    const newComment = new Comments({
+      title,
+      content,
+      postId,
+      createdAt,
+    });
+
+    await newComment.save();
+    console.log("newComment.product_id", newComment.product_id);
+    console.log("users array", users);
+    console.log(socket.adapter.rooms);
+
+    io.to(newComment.product_id).emit("sendCommentToClient", newComment);
+  });
+
+  socket.on("disconnect", () => {
+    console.log(socket.id + " disconnected!");
+  });
+});
+
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI_THINH);
@@ -78,6 +137,6 @@ const connectDB = async () => {
 };
 connectDB();
 
-app.listen(port, () => {
+http.listen(port, () => {
   console.log("Server is running on port", port);
 });
