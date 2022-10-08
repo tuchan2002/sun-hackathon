@@ -80,7 +80,7 @@ const addUserActivity = async (req, res, next) => {
     user.history.push(savedActivity._id);
     const savedUser = await user.save();
 
-    res.status(301).json({
+    res.status(201).json({
       message: "",
       success: true,
       data: {
@@ -109,7 +109,7 @@ const getUserHistory = async (req, res, next) => {
     });
 
     const activities = await Promise.all(awaitActivity);
-    res.status(301).json({
+    res.status(201).json({
       message: "",
       success: true,
       data: {
