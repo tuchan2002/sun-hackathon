@@ -7,7 +7,6 @@ const isAuth = async (req, res, next) => {
     err.statusCode = 401;
     throw err;
   }
-  console.log(authHeader);
   const token = authHeader.split(" ")[1];
   let decodedToken;
   try {
