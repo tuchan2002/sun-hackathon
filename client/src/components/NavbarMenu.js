@@ -68,7 +68,7 @@ const NavbarMenu = () => {
             <NavDropdown
               title={
                 <img
-                  src={auth.user.profile.avatar}
+                  src={auth.user.avatar}
                   alt="avatar"
                   style={{
                     width: "36px",
