@@ -1,5 +1,6 @@
 const Quizzes = require("../models/quizModel");
 const Questions = require("../models/questionModel");
+const Users = require("../models/userModel");
 
 const getAllQuiz = async (req, res, next) => {
   const page = req.query.page;
@@ -180,6 +181,40 @@ const deleteQuiz = async (req, res, next) => {
   }
 };
 
+const getQuizzesByUserId = async (req, res, next) => {
+  const userId = req.params.userId;
+  try {
+    const user = await Users.findById(userId);
+    if (!user) {
+      const err = new Error("Could not find user.");
+      err.statusCode = 404;
+      throw err;
+    }
+
+    const quizzes = await Quizzes.find({
+      user: userId,
+    });
+    if (!quizzes) {
+      const err = new Error("Could not find questions by user.");
+      err.statusCode = 404;
+      throw err;
+    }
+
+    res.status(200).json({
+      message: "",
+      success: true,
+      data: {
+        quizzes,
+      },
+    });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};
+
 const savedManyQuestion = async (questions) => {
   const questionsDoc = questions.map((val) => {
     return new Questions(val);
@@ -219,6 +254,7 @@ const quizController = {
   addQuiz,
   editQuiz,
   deleteQuiz,
+  getQuizzesByUserId,
 };
 
 const getPagination = (page, size) => {

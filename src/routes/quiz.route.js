@@ -7,6 +7,8 @@ router.get("/", quizController.getAllQuiz);
 
 router.get("/:quizId", quizController.getAQuiz);
 
+router.get("/user/:userId", quizController.getQuizzesByUserId);
+
 router.post("/", isAuth, quizController.addQuiz);
 
 router.put("/:quizId", isAuth, quizController.editQuiz);
