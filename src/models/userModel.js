@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const userSchema = new mongoose.Schema(
   {
@@ -49,6 +50,12 @@ const userSchema = new mongoose.Schema(
           "https://res.cloudinary.com/dxnfba463/image/upload/v1664374422/images_iepweu.png",
       },
     },
+    history: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Activity",
+      },
+    ],
   },
   {
     timestamps: true,
