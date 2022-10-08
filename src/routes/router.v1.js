@@ -4,6 +4,7 @@ const authRoute = require("./auth.router");
 const uploadRoute = require("./upload.route");
 const quizRoute = require("./quiz.route");
 const questionRoute = require("./question.route");
+const userRoute = require("./user.route");
 
 const appRoute = express();
 
@@ -15,6 +16,8 @@ appRoute.get("/home/:token", (req, res) => {
 });
 
 appRoute.use("/auth", authRoute);
+
+appRoute.use("/users", userRoute);
 
 appRoute.use("/upload", uploadRoute);
 

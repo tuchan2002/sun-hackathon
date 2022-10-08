@@ -16,7 +16,7 @@ const authController = {
       return next(err);
     }
 
-    const { displayName, email, password } = req.body;
+    const { displayName, email, password, avatar } = req.body;
 
     try {
       const user = await Users.findOne({ email });
@@ -30,6 +30,7 @@ const authController = {
       const newUser = new Users({
         displayName,
         email,
+        avatar,
         password: hashedPw,
       });
 
