@@ -6,7 +6,7 @@ import { BsQuestionCircleFill } from "react-icons/bs";
 import CardItem from "./CardItem";
 import { useNavigate, useParams } from "react-router-dom";
 import { deleteQuizById, getQuizById } from "../../redux/actions/quizAction";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const QuizDetail = () => {
   const navigate = useNavigate();
@@ -22,7 +22,6 @@ const QuizDetail = () => {
     dispatch(deleteQuizById({ id, auth }));
   };
 
-  console.log(quiz.quiz);
   return (
     <>
       <Card>
@@ -50,11 +49,21 @@ const QuizDetail = () => {
                 </span>
               </div>
               <div>
-                <Button variant="primary">Learn</Button>{" "}
+                <Button
+                  variant="primary"
+                  onClick={() => navigate(`/do_quiz/${id}`)}
+                >
+                  Learn
+                </Button>{" "}
                 <Button variant="info">Share</Button>{" "}
-                {quiz.quiz?.user === auth.user.id && (
+                {quiz.quiz?.user === auth.user._id && (
                   <>
-                    <Button variant="primary">Edit</Button>{" "}
+                    <Button
+                      variant="primary"
+                      onClick={() => navigate(`/edit_quiz/${id}`)}
+                    >
+                      Edit
+                    </Button>{" "}
                     <Button variant="danger" onClick={handleDeleteQuizById}>
                       Delete
                     </Button>
@@ -74,7 +83,11 @@ const QuizDetail = () => {
       </Container>
       <Container style={{ marginTop: "16px" }}>
         {quiz.quiz?.questions?.map((question, index) => (
-          <CardItem key={index} question={question}></CardItem>
+          <CardItem
+            key={index}
+            question={question}
+            questionIndex={index}
+          ></CardItem>
         ))}
       </Container>
     </>
