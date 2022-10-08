@@ -41,9 +41,9 @@ const DoQuiz = () => {
   };
   return (
     <div>
-      <h2>DO QUIZ</h2>
-      <h4>{quiz.quiz?.title}</h4>
-      <Container style={{ marginTop: "16px" }}>
+      <h3 style={{ marginBottom: "20px" }}>DO QUIZ</h3>
+      <h5 style={{ color: "#228be6" }}>{quiz.quiz?.title}</h5>
+      <Container style={{ marginTop: "16px", paddingLeft: 0, paddingRight: 0 }}>
         {quiz.quiz?.questions?.map((question, index) => (
           <CardItem
             key={index}

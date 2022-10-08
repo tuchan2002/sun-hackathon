@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.topic {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.title {
+  color: #228be6;
+}

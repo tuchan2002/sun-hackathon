@@ -1,5 +1,6 @@
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
+import classes from "../flashcard/CardItem.module.css";
 
 const CardItem = ({
   question,
@@ -15,7 +16,7 @@ const CardItem = ({
   };
   console.log(listResultSelected);
   return (
-    <Card>
+    <Card bsPrefix={classes["card"]}>
       <Card.Header>
         <h6 style={{ marginRight: "8px" }}>
           {`Question ${questionIndex + 1}: `}{" "}
