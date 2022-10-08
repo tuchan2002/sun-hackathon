@@ -1,5 +1,10 @@
 import { ALERT, FLASHCARD } from "../types";
-import { postDataAPI, getDataAPI, deleteDataAPI } from "../../utils/fetchData";
+import {
+    postDataAPI,
+    getDataAPI,
+    deleteDataAPI,
+    putDataAPI,
+} from "../../utils/fetchData";
 
 export const createFlashcard =
     ({ data, auth }) =>
@@ -19,6 +24,34 @@ export const createFlashcard =
                 },
             });
             window.location.href = "/my_library";
+        } catch (err) {
+            dispatch({
+                type: ALERT,
+                payload: {
+                    error: err.response.data.message,
+                },
+            });
+        }
+    };
+
+export const getAllFlashcard =
+    ({ auth }) =>
+    async (dispatch) => {
+        try {
+            dispatch({ type: ALERT, payload: { loading: true } });
+            const res = await getDataAPI(`flashcards/`, auth.token);
+
+            dispatch({
+                type: FLASHCARD.GET_FLASHCARD,
+                payload: res.data.flashcard,
+            });
+
+            dispatch({
+                type: ALERT,
+                payload: {
+                    success: res.message,
+                },
+            });
         } catch (err) {
             dispatch({
                 type: ALERT,
@@ -73,6 +106,34 @@ export const deleteFlashcardById =
                     success: res.message,
                 },
             });
+        } catch (err) {
+            dispatch({
+                type: ALERT,
+                payload: {
+                    error: err.response.data.message,
+                },
+            });
+        }
+    };
+
+export const updateFlashcard =
+    ({ id, data, auth }) =>
+    async (dispatch) => {
+        try {
+            dispatch({ type: ALERT, payload: { loading: true } });
+            const res = await putDataAPI(`flashcards/${id}`, data, auth.token);
+            dispatch({
+                type: FLASHCARD.UPDATE_FLASHCARD,
+                payload: res.data.newFlashcard,
+            });
+
+            dispatch({
+                type: ALERT,
+                payload: {
+                    success: res.message,
+                },
+            });
+            window.location.href = "/my_library";
         } catch (err) {
             dispatch({
                 type: ALERT,
