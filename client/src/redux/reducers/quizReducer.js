@@ -18,6 +18,11 @@ const quizReducer = (state = initialState, action) => {
         ...state,
         quiz: action.payload,
       };
+    case QUIZ.DELETE_QUIZ:
+      return {
+        ...state,
+        quizzes: state.quizzes.filter((item) => item._id !== action.payload),
+      };
     default:
       return state;
   }
