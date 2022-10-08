@@ -14,178 +14,162 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 const initialState = {
-    oldPassword: "",
-    newPassword: "",
-    confirm_newPassword: "",
+  oldPassword: "",
+  newPassword: "",
+  confirm_newPassword: "",
 };
 const NavbarMenu = () => {
-    const { alert, auth } = useSelector((state) => state);
-    const dispatch = useDispatch();
+  const { alert, auth } = useSelector((state) => state);
+  const dispatch = useDispatch();
 
-    const [isShowModalChangePassword, setIsShowModalChangePassword] =
-        useState(false);
+  const [isShowModalChangePassword, setIsShowModalChangePassword] =
+    useState(false);
 
-    const handleCloseModalChangePassword = () => {
-        setChangePasswordData(initialState);
-        setIsShowModalChangePassword(false);
-    };
-    const handleShowModalChangePassword = () =>
-        setIsShowModalChangePassword(true);
+  const handleCloseModalChangePassword = () => {
+    setChangePasswordData(initialState);
+    setIsShowModalChangePassword(false);
+  };
+  const handleShowModalChangePassword = () =>
+    setIsShowModalChangePassword(true);
 
-    const [changePasswordData, setChangePasswordData] = useState(initialState);
+  const [changePasswordData, setChangePasswordData] = useState(initialState);
 
-    const { oldPassword, newPassword, confirm_newPassword } =
-        changePasswordData;
+  const { oldPassword, newPassword, confirm_newPassword } = changePasswordData;
 
-    const onChangeInput = (e) => {
-        setChangePasswordData({
-            ...changePasswordData,
-            [e.target.name]: e.target.value,
-        });
-    };
+  const onChangeInput = (e) => {
+    setChangePasswordData({
+      ...changePasswordData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-    const handleSubmitFormChangePassword = () => {
-        handleCloseModalChangePassword();
-        dispatch(changePassword({ changePasswordData, auth }));
-    };
+  const handleSubmitFormChangePassword = () => {
+    handleCloseModalChangePassword();
+    dispatch(changePassword({ changePasswordData, auth }));
+  };
 
-    return (
-        <>
-            <Navbar collapseOnSelect bg="light" variant="light">
-                <Container>
-                    <Form style={{ display: "flex", flex: 1 }}>
-                        <Form.Control
-                            type="search"
-                            placeholder="Search"
-                            aria-label="Search"
-                        />
-                    </Form>
-                    <Nav style={{ alignItems: "center", gap: "12px" }}>
-                        <NavDropdown
-                            title={
-                                <img
-                                    src={auth.user.avatar}
-                                    alt="avatar"
-                                    style={{
-                                        width: "36px",
-                                        height: "36px",
-                                        borderRadius: "100px",
-                                    }}
-                                />
-                            }
-                            id="collasible-nav-dropdown"
-                            align="end"
-                        >
-                            <NavDropdown.Item
-                                as={Link}
-                                to={`/profile/${auth.user._id}`}
-                            >
-                                Profile
-                            </NavDropdown.Item>
-                            <NavDropdown.Item
-                                onClick={handleShowModalChangePassword}
-                            >
-                                Change password
-                            </NavDropdown.Item>
-                            <NavDropdown.Item
-                                as={Link}
-                                to="/"
-                                onClick={() => dispatch(logout())}
-                            >
-                                Logout
-                            </NavDropdown.Item>
-                        </NavDropdown>
-                        <NavDropdown
-                            title={
-                                <AiOutlineNotification></AiOutlineNotification>
-                            }
-                            id="nofication"
-                            align="end"
-                        >
-                            <NavDropdown.Item>1</NavDropdown.Item>
-                            <NavDropdown.Item>2</NavDropdown.Item>
-                            <NavDropdown.Item>3</NavDropdown.Item>
-                        </NavDropdown>
-                    </Nav>
-                </Container>
-            </Navbar>
-
-            {/* Modal change password */}
-            <Modal
-                show={isShowModalChangePassword}
-                onHide={handleCloseModalChangePassword}
+  return (
+    <>
+      <Navbar collapseOnSelect bg="light" variant="light">
+        <Container>
+          <Form style={{ display: "flex", flex: 1 }}>
+            <Form.Control
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+          </Form>
+          <Nav style={{ alignItems: "center", gap: "12px" }}>
+            <NavDropdown
+              title={
+                <img
+                  src={auth.user.avatar}
+                  alt="avatar"
+                  style={{
+                    width: "36px",
+                    height: "36px",
+                    borderRadius: "100px",
+                  }}
+                />
+              }
+              id="collasible-nav-dropdown"
+              align="end"
             >
-                <Modal.Header closeButton>
-                    <Modal.Title>パスワード変更</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form
-                        style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "16px",
-                        }}
-                    >
-                        <Form.Group controlId="formBasicOldPassword">
-                            <Form.Label>古いパスワード</Form.Label>
-                            <Form.Control
-                                type="password"
-                                placeholder="Old Password"
-                                name="oldPassword"
-                                onChange={onChangeInput}
-                                value={oldPassword}
-                            />
-                            <Form.Text className="text-danger">
-                                {alert.oldPassword ? alert.oldPassword : ""}
-                            </Form.Text>
-                        </Form.Group>
-                        <Form.Group controlId="formBasicNewPassword">
-                            <Form.Label>新しいパスワード</Form.Label>
-                            <Form.Control
-                                type="password"
-                                placeholder="Password"
-                                name="newPassword"
-                                onChange={onChangeInput}
-                                value={newPassword}
-                            />
-                            <Form.Text className="text-danger">
-                                {alert.newPassword ? alert.newPassword : ""}
-                            </Form.Text>
-                        </Form.Group>
-                        <Form.Group controlId="formBasicConfirmNewPassword">
-                            <Form.Label>新しいパスワード（確認用）</Form.Label>
-                            <Form.Control
-                                type="password"
-                                placeholder="Confirm Password"
-                                name="confirm_newPassword"
-                                onChange={onChangeInput}
-                                value={confirm_newPassword}
-                            />
-                            <Form.Text className="text-danger">
-                                {alert.confirm_newPassword
-                                    ? alert.confirm_newPassword
-                                    : ""}
-                            </Form.Text>
-                        </Form.Group>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button
-                        variant="primary"
-                        onClick={handleSubmitFormChangePassword}
-                    >
-                        保存
-                    </Button>
-                    <Button
-                        variant="secondary"
-                        onClick={handleCloseModalChangePassword}
-                    >
-                        キャンセル
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        </>
-    );
+              <NavDropdown.Item as={Link} to={`/profile/${auth.user._id}`}>
+                Profile
+              </NavDropdown.Item>
+              <NavDropdown.Item onClick={handleShowModalChangePassword}>
+                Change password
+              </NavDropdown.Item>
+              <NavDropdown.Item
+                as={Link}
+                to="/"
+                onClick={() => dispatch(logout())}
+              >
+                Logout
+              </NavDropdown.Item>
+            </NavDropdown>
+            <NavDropdown
+              title={<AiOutlineNotification></AiOutlineNotification>}
+              id="nofication"
+              align="end"
+            >
+              <NavDropdown.Item>1</NavDropdown.Item>
+              <NavDropdown.Item>2</NavDropdown.Item>
+              <NavDropdown.Item>3</NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+        </Container>
+      </Navbar>
+
+      {/* Modal change password */}
+      <Modal
+        show={isShowModalChangePassword}
+        onHide={handleCloseModalChangePassword}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>パスワード変更</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "16px",
+            }}
+          >
+            <Form.Group controlId="formBasicOldPassword">
+              <Form.Label>古いパスワード</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Old Password"
+                name="oldPassword"
+                onChange={onChangeInput}
+                value={oldPassword}
+              />
+              <Form.Text className="text-danger">
+                {alert.oldPassword ? alert.oldPassword : ""}
+              </Form.Text>
+            </Form.Group>
+            <Form.Group controlId="formBasicNewPassword">
+              <Form.Label>新しいパスワード</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                name="newPassword"
+                onChange={onChangeInput}
+                value={newPassword}
+              />
+              <Form.Text className="text-danger">
+                {alert.newPassword ? alert.newPassword : ""}
+              </Form.Text>
+            </Form.Group>
+            <Form.Group controlId="formBasicConfirmNewPassword">
+              <Form.Label>新しいパスワード（確認用）</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Confirm Password"
+                name="confirm_newPassword"
+                onChange={onChangeInput}
+                value={confirm_newPassword}
+              />
+              <Form.Text className="text-danger">
+                {alert.confirm_newPassword ? alert.confirm_newPassword : ""}
+              </Form.Text>
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleSubmitFormChangePassword}>
+            保存
+          </Button>
+          <Button variant="secondary" onClick={handleCloseModalChangePassword}>
+            キャンセル
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
 };
 
 export default NavbarMenu;

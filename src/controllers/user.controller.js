@@ -39,7 +39,7 @@ const addUserProfile = async (req, res, next) => {
       }
     );
 
-    res.status(301).json({
+    res.status(201).json({
       message: "",
       success: true,
       data: {
