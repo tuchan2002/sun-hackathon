@@ -7,6 +7,7 @@ const questionRoute = require("./question.route");
 
 const flashcardRoute = require("./flashcard.route");
 const cardRoute = require("./card.route");
+const postRoute = require("./post.route");
 const appRoute = express();
 
 appRoute.get("/home/:token", (req, res) => {
@@ -23,8 +24,11 @@ appRoute.use("/upload", uploadRoute);
 appRoute.use("/quizzes", quizRoute);
 
 appRoute.use("/question", questionRoute);
+
 appRoute.use("/flashcards", flashcardRoute);
 
 appRoute.use("/cards", cardRoute);
+
+appRoute.use("/posts", postRoute);
 
 module.exports = appRoute;

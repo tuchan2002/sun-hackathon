@@ -6,10 +6,6 @@ const quizSchema = new Schema({
     type: String,
     require: true
   },
-  User: {
-    type: Schema.Types.ObjectId,
-    required: true,
-  },
   user: {
     type: Schema.Types.ObjectId,
     required: true,
