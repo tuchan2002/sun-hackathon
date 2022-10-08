@@ -35,6 +35,7 @@ const postController = {
         success: true,
         data: {
           post,
+          liked: post.usersLiked.includes(req.userId),
         },
       });
     } catch (err) {
@@ -50,6 +51,8 @@ const postController = {
       post.User = req.userId;
       post.title = req.body.title;
       post.content = req.body.content;
+      post.usersLiked = [];
+      post.comments = [];
       await post.save();
       return res.status(201).json({
         message: "Create post success",
@@ -90,8 +93,8 @@ const postController = {
         message: "Update post success",
         success: true,
         data: {
-          newPost
-        }
+          newPost,
+        },
       });
     } catch (err) {
       if (!err.statusCode) {
@@ -99,6 +102,47 @@ const postController = {
       }
       next(err);
     }
+  },
+  likePost: async (req, res, next) => {
+    const post = await Post.findById(req.params.id);
+    if (req.query.liked == "false") {
+      post.usersLiked.push(req.query.userId);
+      await post.save();
+    } else {
+      const newUsersLiked = post.usersLiked.filter(
+        (id) => id != req.query.userId
+      );
+      post.usersLiked = newUsersLiked;
+      await post.save();
+    }
+    return res.status(201).json({
+      message: "Like success",
+      success: true,
+      data: {
+        post,
+        liked: post.usersLiked.includes(req.userId),
+      },
+    });
+  },
+  totalLike: async (req, res, next) => {
+    let totalLike = 0;
+    const posts = await Post.find({ User : req.params.id });
+    console.log(posts);
+    if (Array.isArray(posts)) {
+      for (let post of posts) {
+        totalLike += post.usersLiked.length;
+      }
+    } else {
+      if (posts.usersLiked === undefined) totalLike = 0;
+      else totalLike = posts.usersLiked.length;
+    }
+    return res.status(201).json({
+      message: "Calculate total like success",
+      success: true,
+      data: {
+        totalLike,
+      },
+    });
   },
 };
 

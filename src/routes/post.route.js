@@ -14,4 +14,9 @@ router.delete("/:id", isAuth, isUserPost, postController.deletePost);
 
 router.put("/:id", isAuth, isUserPost, postController.updatePost);
 
+router.put("/likePost/:id", isAuth, postController.likePost);
+
+router.get("/totalLike/:id", isAuth,  postController.totalLike);
+
 module.exports = router;
+ 
