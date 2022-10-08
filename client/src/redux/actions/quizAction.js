@@ -35,6 +35,26 @@ export const createQuiz =
         }
     };
 
+export const getAllQuizzes =
+    ({ url, auth }) =>
+    async (dispatch) => {
+        try {
+            dispatch({ type: ALERT, payload: { loading: true } });
+            const res = await getDataAPI(`quizzes/`, auth.token);
+            dispatch({
+                type: QUIZ.GET_QUIZS,
+                payload: res.data.allQuiz,
+            });
+        } catch (err) {
+            dispatch({
+                type: ALERT,
+                payload: {
+                    error: err.response.data.message,
+                },
+            });
+        }
+    };
+
 export const getQuizById =
     ({ id, auth }) =>
     async (dispatch) => {
@@ -95,11 +115,11 @@ export const deleteQuizById =
     async (dispatch) => {
         try {
             const res = await deleteDataAPI(`quizzes/${id}`, auth.token);
+            console.log(res);
             dispatch({
                 type: QUIZ.DELETE_QUIZ,
                 payload: id,
             });
-
             window.location.href = "/mylibrary";
         } catch (err) {
             dispatch({

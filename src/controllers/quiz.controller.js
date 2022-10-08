@@ -5,29 +5,16 @@ const Users = require("../models/userModel");
 const getAllQuiz = async (req, res, next) => {
     const page = req.query.page;
     try {
-        const amount = await Quizzes.count();
-        const links = [];
-
-        const pages = amount / 6;
-        for (let i = 1; i <= pages + 1; i++) {
-            links.push({
-                url: `http://localhost:8080/api/v1/quizzes?page=${i}`,
-                label: `${i}`,
-            });
-        }
-
-        const pageOption = getPagination(page);
-        const allQuiz = await Quizzes.find()
-            .skip(pageOption.skip)
-            .limit(pageOption.limit)
-            .populate("questions");
+        const allQuiz = await Quizzes.find().populate("questions").populate({
+            path: "user",
+            select: "displayName avatar createdAt",
+        });
 
         res.status(201).json({
             message: "",
             success: true,
             data: {
                 allQuiz,
-                links,
             },
         });
     } catch (err) {

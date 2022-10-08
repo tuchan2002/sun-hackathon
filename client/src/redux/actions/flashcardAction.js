@@ -35,15 +35,15 @@ export const createFlashcard =
     };
 
 export const getAllFlashcard =
-    ({ auth }) =>
+    ({ url, auth }) =>
     async (dispatch) => {
         try {
             dispatch({ type: ALERT, payload: { loading: true } });
             const res = await getDataAPI(`flashcards/`, auth.token);
 
             dispatch({
-                type: FLASHCARD.GET_FLASHCARD,
-                payload: res.data.flashcard,
+                type: FLASHCARD.GET_FLASHCARDS,
+                payload: res.data.allFlashcard,
             });
 
             dispatch({
@@ -157,7 +157,6 @@ export const updateFlashcard =
                 type: FLASHCARD.UPDATE_FLASHCARD,
                 payload: res.data.newFlashcard,
             });
-
             dispatch({
                 type: ALERT,
                 payload: {
