@@ -12,6 +12,8 @@ import NavbarMenu from "./components/NavbarMenu";
 import ResetPassword from "./pages/reset_password";
 import NewPassword from "./pages/new_password";
 import SidebarMenu from "./components/SidebarMenu";
+import { SOCKET } from "./redux/types";
+import io from "socket.io-client";
 
 function App() {
   const { auth } = useSelector((state) => state);
@@ -20,7 +22,13 @@ function App() {
 
   useEffect(() => {
     dispatch(refreshToken());
+
+    // socket
+    const socket = io();
+    dispatch({ type: SOCKET, payload: socket });
+    return () => socket.close();
   }, [dispatch]);
+
   return (
     <Router>
       <div style={{ display: "flex" }}>
