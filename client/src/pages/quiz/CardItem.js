@@ -6,6 +6,7 @@ const CardItem = ({
   questionIndex,
   listResultSelected,
   setListResultSelected,
+  isDoQuiz,
 }) => {
   const onChangeResultSelected = (result) => {
     const temp = [...listResultSelected];
@@ -31,39 +32,55 @@ const CardItem = ({
           }}
         >
           <div style={{ display: "flex", gap: "8px" }}>
-            <Form.Check
-              type="radio"
-              name={`result${questionIndex}`}
-              onChange={() => onChangeResultSelected(0)}
-              checked={listResultSelected[questionIndex] === 0 ? true : false}
-            />
+            {isDoQuiz ? (
+              <Form.Check
+                type="radio"
+                name={`result${questionIndex}`}
+                onChange={() => onChangeResultSelected(0)}
+                checked={listResultSelected[questionIndex] === 0 ? true : false}
+              />
+            ) : (
+              "1. "
+            )}
             <span>{question.answers[0]}</span>
           </div>
           <div style={{ display: "flex", gap: "8px" }}>
-            <Form.Check
-              type="radio"
-              name={`result${questionIndex}`}
-              onChange={() => onChangeResultSelected(1)}
-              checked={listResultSelected[questionIndex] === 1 ? true : false}
-            />
+            {isDoQuiz ? (
+              <Form.Check
+                type="radio"
+                name={`result${questionIndex}`}
+                onChange={() => onChangeResultSelected(1)}
+                checked={listResultSelected[questionIndex] === 1 ? true : false}
+              />
+            ) : (
+              "2. "
+            )}
             <span>{question.answers[1]}</span>
           </div>
           <div style={{ display: "flex", gap: "8px" }}>
-            <Form.Check
-              type="radio"
-              name={`result${questionIndex}`}
-              onChange={() => onChangeResultSelected(2)}
-              checked={listResultSelected[questionIndex] === 2 ? true : false}
-            />
+            {isDoQuiz ? (
+              <Form.Check
+                type="radio"
+                name={`result${questionIndex}`}
+                onChange={() => onChangeResultSelected(2)}
+                checked={listResultSelected[questionIndex] === 2 ? true : false}
+              />
+            ) : (
+              "3. "
+            )}
             <span>{question.answers[2]}</span>
           </div>
           <div style={{ display: "flex", gap: "8px" }}>
-            <Form.Check
-              type="radio"
-              name={`result${questionIndex}`}
-              onChange={() => onChangeResultSelected(3)}
-              checked={listResultSelected[questionIndex] === 3 ? true : false}
-            />
+            {isDoQuiz ? (
+              <Form.Check
+                type="radio"
+                name={`result${questionIndex}`}
+                onChange={() => onChangeResultSelected(3)}
+                checked={listResultSelected[questionIndex] === 3 ? true : false}
+              />
+            ) : (
+              "4. "
+            )}
             <span>{question.answers[3]}</span>
           </div>
         </blockquote>

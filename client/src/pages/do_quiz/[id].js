@@ -6,6 +6,8 @@ import Container from "react-bootstrap/Container";
 import CardItem from "../quiz/CardItem";
 import Button from "react-bootstrap/esm/Button";
 import Swal from "sweetalert2";
+import { postDataAPI } from "../../utils/fetchData";
+import { createHistory } from "../../redux/actions/historyAction";
 
 const DoQuiz = () => {
   const navigate = useNavigate();
@@ -26,6 +28,12 @@ const DoQuiz = () => {
         total++;
       }
     });
+
+    // luu history
+    dispatch(
+      createHistory({ data: { quiz: quiz.quiz?._id, result: total }, auth })
+    );
+
     await Swal.fire({
       icon: "success",
       text: `Total ${total}/${quiz.quiz?.questions?.length} Questions`,
@@ -43,6 +51,7 @@ const DoQuiz = () => {
             questionIndex={index}
             listResultSelected={listResultSelected}
             setListResultSelected={setListResultSelected}
+            isDoQuiz={true}
           ></CardItem>
         ))}
       </Container>
