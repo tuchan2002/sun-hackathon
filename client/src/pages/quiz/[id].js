@@ -1,7 +1,5 @@
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import { useDispatch, useSelector } from "react-redux";
 import { BsQuestionCircleFill } from "react-icons/bs";
@@ -35,8 +33,8 @@ const QuizDetail = () => {
             {quiz.quiz?.title}
           </Card.Title>
           <Container>
-            <Row>
-              <Col>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div>
                 <span>
                   <img
                     src={auth.user.avatar}
@@ -50,16 +48,20 @@ const QuizDetail = () => {
                   />
                   {auth.user.displayName}
                 </span>
-              </Col>
-              <Col>
+              </div>
+              <div>
                 <Button variant="primary">Learn</Button>{" "}
                 <Button variant="info">Share</Button>{" "}
-                <Button variant="primary">Edit</Button>{" "}
-                <Button variant="danger" onClick={handleDeleteQuizById}>
-                  Delete
-                </Button>{" "}
-              </Col>
-            </Row>
+                {quiz.quiz?.user === auth.user.id && (
+                  <>
+                    <Button variant="primary">Edit</Button>{" "}
+                    <Button variant="danger" onClick={handleDeleteQuizById}>
+                      Delete
+                    </Button>
+                  </>
+                )}
+              </div>
+            </div>
           </Container>
         </Card.Body>
       </Card>

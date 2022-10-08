@@ -83,11 +83,11 @@ const deleteQuestion = async (req, res, next) => {
       throw err;
     }
 
-    const newQuestion = quiz.questions.filter((val) => {
+    const newQuestions = quiz.questions.filter((val) => {
       return val._id.toString() !== questionId;
     });
 
-    quiz.questions = newQuestion;
+    quiz.questions = newQuestions;
 
     await quiz.save();
     const deletedQuestion = await Questions.findByIdAndDelete(questionId);

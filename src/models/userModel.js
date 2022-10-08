@@ -14,11 +14,6 @@ const userSchema = new mongoose.Schema(
       trim: true,
       unique: true,
     },
-    avatar: {
-      type: String,
-      default:
-        "https://res.cloudinary.com/dxnfba463/image/upload/v1664374422/images_iepweu.png",
-    },
     password: {
       type: String,
       required: true,
@@ -36,16 +31,24 @@ const userSchema = new mongoose.Schema(
       default: null,
     },
     profile: {
-      school: {
-        type: String
+      university: {
+        type: String,
+      },
+      graduationYear: {
+        type: Number,
       },
       birthday: {
-        type: Date
+        type: Date,
       },
-      sex: {
-        type: Boolean
-      }
-    }
+      gender: {
+        type: Boolean,
+      },
+      avatar: {
+        type: String,
+        default:
+          "https://res.cloudinary.com/dxnfba463/image/upload/v1664374422/images_iepweu.png",
+      },
+    },
   },
   {
     timestamps: true,
