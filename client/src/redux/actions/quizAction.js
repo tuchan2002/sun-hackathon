@@ -1,5 +1,10 @@
 import { ALERT, QUIZ } from "../types";
-import { postDataAPI, getDataAPI, deleteDataAPI } from "../../utils/fetchData";
+import {
+  postDataAPI,
+  getDataAPI,
+  deleteDataAPI,
+  putDataAPI,
+} from "../../utils/fetchData";
 
 export const createQuiz =
   ({ data, auth }) =>
@@ -71,6 +76,34 @@ export const deleteQuizById =
       dispatch({
         type: ALERT,
         payload: { error: err.response.data.msg },
+      });
+    }
+  };
+
+export const updateQuiz =
+  ({ id, data, auth }) =>
+  async (dispatch) => {
+    try {
+      dispatch({ type: ALERT, payload: { loading: true } });
+      const res = await putDataAPI(`quizzes/${id}`, data, auth.token);
+      dispatch({
+        type: QUIZ.UPDATE_QUIZ,
+        payload: res.data.editedQuiz,
+      });
+
+      dispatch({
+        type: ALERT,
+        payload: {
+          success: res.message,
+        },
+      });
+      window.location.href = "/my_library";
+    } catch (err) {
+      dispatch({
+        type: ALERT,
+        payload: {
+          error: err.response.data.message,
+        },
       });
     }
   };
