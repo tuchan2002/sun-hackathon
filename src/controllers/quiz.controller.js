@@ -233,7 +233,6 @@ const savedManyQuestion = async (questions) => {
 const updateAllQuestion = async (questions, quiz) => {
   try {
     const deleteQus = quiz.questions.map((val) => {
-      console.log(val);
       return Questions.findByIdAndDelete(val);
     });
 

@@ -56,6 +56,17 @@ const userSchema = new mongoose.Schema(
         ref: "Activity",
       },
     ],
+    flashcardBM: [
+      {
+        flashcard: {
+          type: Schema.Types.ObjectId,
+          ref: "Flashcard",
+        },
+        lastVisited: {
+          type: Date,
+        },
+      },
+    ],
   },
   {
     timestamps: true,
