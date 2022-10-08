@@ -21,7 +21,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <div>
+    <div style={{ maxWidth: "700px", margin: "0 auto" }}>
       <h1 style={{ textAlign: "center" }}>パスワードリセット</h1>
       <Form
         onSubmit={handleSubmit}
@@ -40,7 +40,9 @@ const ResetPassword = () => {
         <Button variant="primary" type="submit" disabled={email ? false : true}>
           <BsFillArrowRightCircleFill /> 送信
         </Button>
-        <Link to="/">ログイン画面に戻る</Link>
+        <Link to="/" style={{ fontSize: "14px" }}>
+          ログイン画面に戻る
+        </Link>
       </Form>
     </div>
   );
