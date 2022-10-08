@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const quizSchema = new Schema({
+  title: {
+    type: String,
+    require: true
+  },
   User: {
     type: Schema.Types.ObjectId,
     required: true,

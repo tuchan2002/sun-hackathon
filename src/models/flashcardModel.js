@@ -1,16 +1,22 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const flashcardSchema = new Schema({
-  Cards: [{
-    type: Schema.Types.ObjectId,
-    required: true,
-    ref: 'Card'
-  }],
+  title: {
+    type: String,
+    require: true,
+  },
+  Cards: [
+    {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: "Card",
+    },
+  ],
   User: {
     type: Schema.Types.ObjectId,
     required: true,
-    ref: 'User'
-  }
+    ref: "User",
+  },
 });
 
 module.exports = mongoose.model("Flashcard", flashcardSchema);
