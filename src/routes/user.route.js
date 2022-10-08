@@ -13,4 +13,8 @@ router.post("/bookmark", isAuth, userController.addUserBookmark);
 
 router.get("/hisroty", isAuth, userController.getUserHistory);
 
+router.get("/bookmark", isAuth, userController.getUserBookmark);
+
+router.delete("/bookmark/:flashcardId", isAuth, userController.deleteBookmark);
+
 module.exports = router;
