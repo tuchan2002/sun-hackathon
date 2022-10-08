@@ -1,4 +1,5 @@
 const Users = require("../models/userModel");
+const Activity = require("../models/activityModel");
 
 const getUserProfile = async (req, res, next) => {
   const userId = req.params.userId;
@@ -59,9 +60,75 @@ const addUserProfile = async (req, res, next) => {
   }
 };
 
+const addUserActivity = async (req, res, next) => {
+  const { quiz, result } = req.body;
+  try {
+    const newActivity = new Activity({
+      quiz,
+      result,
+    });
+
+    const savedActivity = await newActivity.save();
+
+    const user = await Users.findById(req.userId);
+    if (!user) {
+      const err = new Error("Could not find user.");
+      err.statusCode = 404;
+      throw err;
+    }
+
+    user.history.push(savedActivity._id);
+    const savedUser = await user.save();
+
+    res.status(301).json({
+      message: "",
+      success: true,
+      data: {
+        savedUser,
+      },
+    });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};
+
+const getUserHistory = async (req, res, next) => {
+  try {
+    const user = await Users.findById(req.userId).populate("history.Activity");
+    if (!user) {
+      const err = new Error("Could not find user.");
+      err.statusCode = 404;
+      throw err;
+    }
+
+    const awaitActivity = user.history.map((val) => {
+      return Activity.findById(val.toString()).populate("quiz");
+    });
+
+    const activities = await Promise.all(awaitActivity);
+    res.status(301).json({
+      message: "",
+      success: true,
+      data: {
+        activities,
+      },
+    });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};
+
 const userController = {
   getUserProfile,
   addUserProfile,
+  addUserActivity,
+  getUserHistory,
 };
 
 module.exports = userController;

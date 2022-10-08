@@ -7,4 +7,8 @@ router.get("/profile/:userId", userController.getUserProfile);
 
 router.post("/profile", isAuth, userController.addUserProfile);
 
+router.post("/hisroty", isAuth, userController.addUserActivity);
+
+router.get("/hisroty", isAuth, userController.getUserHistory);
+
 module.exports = router;
