@@ -2,6 +2,7 @@ import { QUIZ } from "../types";
 
 const initialState = {
   loading: false,
+  quiz: {},
   quizzes: [],
 };
 
@@ -11,6 +12,11 @@ const quizReducer = (state = initialState, action) => {
       return {
         ...state,
         quizzes: [action.payload, ...state.quizzes],
+      };
+    case QUIZ.GET_QUIZ:
+      return {
+        ...state,
+        quiz: action.payload,
       };
     default:
       return state;
