@@ -2,10 +2,15 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { IoTrashOutline } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
+import { createFlashcard } from "../redux/actions/flashcardAction";
+
 const CreateFlashcard = () => {
+    const dispatch = useDispatch();
     let navigate = useNavigate();
+    const { auth, flashcard } = useSelector((state) => state);
     const [flashCardsTitle, setFlashCardsTitle] = useState("");
     const [cards, setCards] = useState([]);
 
@@ -14,14 +19,12 @@ const CreateFlashcard = () => {
     };
 
     const onChangeVNInputContent = (e, index) => {
-        console.log(e.target.value, index);
         const temp = [...cards];
         temp[index].vietnameseWord = e.target.value;
         setCards(temp);
     };
 
     const onChangeJPInputContent = (e, index) => {
-        console.log(e.target.value, index);
         const temp = [...cards];
         temp[index].japaneseWord = e.target.value;
         setCards(temp);
@@ -33,8 +36,13 @@ const CreateFlashcard = () => {
     };
 
     const handleSubmit = () => {
-        console.log(flashCardsTitle);
-        console.log(cards);
+        dispatch(
+            createFlashcard({
+                data: { title: flashCardsTitle, Cards: cards },
+                auth,
+            })
+        );
+        console.log("submit");
     };
 
     return (

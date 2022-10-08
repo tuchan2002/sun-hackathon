@@ -86,7 +86,9 @@ const flashcardController = {
       return res.status(201).json({
         message: "Create flashcard success",
         success: true,
-        data: flashcard,
+        data: {
+          flashcard
+        }
       });
     } catch (err) {
       if (!err.statusCode) {
@@ -97,6 +99,10 @@ const flashcardController = {
   },
   deleteFlashcard: async (req, res, next) => {
     try {
+      const cardArray = Flashcard.findById(req.params.id).Cards;
+      for(let card of cardArray) {
+        await Card.findByIdAndDelete(card._id);
+      }
       await Flashcard.findByIdAndDelete(req.params.id);
       return res.status(201).json({
         message: "Delete flashcard success.",
