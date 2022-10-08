@@ -16,6 +16,7 @@ const isAuth = async (req, res, next) => {
       err.statusCode = 401;
       throw err;
     }
+    req.userId = decodedToken.id;
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
@@ -23,7 +24,7 @@ const isAuth = async (req, res, next) => {
     next(err);
   }
 
-  req.userId = decodedToken.id;
+  
   next();
 };
 

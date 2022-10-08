@@ -5,7 +5,7 @@ const isUserFlashcard = async (req, res, next) => {
     const flashcard = await Flashcard.findById(req.params.id);
     if (!flashcard.User.equals(req.userId)) {
       const err = new Error("You is not author");
-      err.statusCode = 404;
+      err.statusCode = 403;
       throw err;
     }
   } catch (err) {
