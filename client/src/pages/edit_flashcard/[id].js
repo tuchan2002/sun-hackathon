@@ -40,13 +40,17 @@ const EditFlashcard = () => {
     };
 
     const handleSubmit = () => {
+        let temp = cards.map((card) => ({
+            vietnameseWord: card.vietnameseWord,
+            japaneseWord: card.japaneseWord,
+        }));
         dispatch(
             updateFlashcard({
-                data: { title: flashCardsTitle, Cards: cards },
+                id,
+                data: { title: flashCardsTitle, cards: temp },
                 auth,
             })
         );
-        console.log("submit");
     };
 
     useEffect(() => {
