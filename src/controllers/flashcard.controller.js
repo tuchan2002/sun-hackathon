@@ -1,29 +1,30 @@
 const Flashcard = require("../models/flashcardModel");
 const Card = require("../models/cardModel");
+const User = require("../models/userModel");
 
 const flashcardController = {
   getAllFlashcards: async (req, res, next) => {
     try {
       const page = req.query.page;
-      if(+page<=0) {
+      if (+page <= 0) {
         page = 1;
       }
       const amount = await Flashcard.count();
       const links = [];
 
-    const pages = amount / 6;
-    for (let i = 1; i <= pages + 1; i++) {
-      links.push({
-        url: `http://localhost:8080/api/v1/flashcards?page=${i}`,
-        label: `${i}`,
-      });
-    }
+      const pages = amount / 6;
+      for (let i = 1; i <= pages + 1; i++) {
+        links.push({
+          url: `http://localhost:8080/api/v1/flashcards?page=${i}`,
+          label: `${i}`,
+        });
+      }
 
-    const pageOption = getPagination(page);
-    const allFlashcard = await Flashcard.find()
-      .skip(pageOption.skip)
-      .limit(pageOption.limit)
-      .populate("Cards");
+      const pageOption = getPagination(page);
+      const allFlashcard = await Flashcard.find()
+        .skip(pageOption.skip)
+        .limit(pageOption.limit)
+        .populate("Cards");
 
       if (!allFlashcard) {
         const err = new Error("Can not find any flashcard");
@@ -35,7 +36,7 @@ const flashcardController = {
         success: true,
         data: {
           allFlashcard,
-          links
+          links,
         },
       });
     } catch (err) {
@@ -87,8 +88,8 @@ const flashcardController = {
         message: "Create flashcard success",
         success: true,
         data: {
-          flashcard
-        }
+          flashcard,
+        },
       });
     } catch (err) {
       if (!err.statusCode) {
@@ -100,7 +101,7 @@ const flashcardController = {
   deleteFlashcard: async (req, res, next) => {
     try {
       const cardArray = Flashcard.findById(req.params.id).Cards;
-      for(let card of cardArray) {
+      for (let card of cardArray) {
         await Card.findByIdAndDelete(card._id);
       }
       await Flashcard.findByIdAndDelete(req.params.id);
@@ -116,32 +117,72 @@ const flashcardController = {
     }
   },
   updateFlashcard: async (req, res, next) => {
+    const flashcardId = req.params.flashcardId;
+    const { title } = req.body;
     try {
-      if (!req.body.Cards) {
-        await Flashcard.findByIdAndUpdate(req.params.id, {
-          title: req.body.title,
-        });
-      } else {
-        const newFlashcard = new Flashcard();
-        newFlashcard.User = req.body.User;
-        newFlashcard.title = req.body.title;
-        const cardArray = req.body.Cards;
-        for (let card of cardArray) {
-          let newCard = await Card.create({
-            japaneseWord: card.japaneseWord,
-            vietnameseWord: card.vietnameseWord,
-          });
-          newFlashcard.Cards.push(newCard._id);
-        }
-        await Flashcard.findByIdAndUpdate(req.params.id, newFlashcard);
+      const flashcard = await Flashcard.findById(flashcardId);
+      if (!flashcard) {
+        const err = new Error("Could not find flashcard.");
+        err.statusCode = 404;
+        throw err;
       }
-      const newFlashcard = await Flashcard.findById(req.params.id);
-      return res.status(201).json({
-        message: "Update flashcard success",
+
+      const editedFlashcard = await Flashcard.updateOne(
+        { _id: flashcardId },
+        { title: title }
+      );
+
+      if (req.body.cards) {
+        const savedFlashcard = await updateAllCard(req.body.cards, flashcard);
+        return res.status(200).json({
+          message: "",
+          success: true,
+          data: {
+            savedFlashcard,
+          },
+        });
+      }
+
+      res.status(200).json({
+        message: "",
         success: true,
         data: {
-          newFlashcard
-        }
+          editedFlashcard,
+        },
+      });
+    } catch (err) {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    }
+  },
+  getFlashcardsByUserId: async (req, res, next) => {
+    const userId = req.params.userId;
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        const err = new Error("Could not find user.");
+        err.statusCode = 404;
+        throw err;
+      }
+
+      const flashcards = await Flashcard.find({
+        User: userId,
+      });
+
+      if (!flashcards) {
+        const err = new Error("Could not find flashcards by user.");
+        err.statusCode = 404;
+        throw err;
+      }
+
+      res.status(200).json({
+        message: "",
+        success: true,
+        data: {
+          flashcards,
+        },
       });
     } catch (err) {
       if (!err.statusCode) {
@@ -157,6 +198,40 @@ const getPagination = (page, size) => {
   const limit = size ? +size : 6;
   const skip = page ? (+page - 1) * limit : 0;
   return { limit, skip };
+};
+
+const savedManyCard = async (cards) => {
+  const cardsDoc = cards.map((val) => {
+    console.log(val);
+    return new Card(val);
+  });
+  console.log(cardsDoc);
+  try {
+    const cardsSaved = await Card.bulkSave(cardsDoc);
+
+    return Object.keys(cardsSaved.insertedIds).map((key) =>
+      cardsSaved.insertedIds[key].toString()
+    );
+  } catch (err) {
+    throw err;
+  }
+};
+
+const updateAllCard = async (cards, flashcard) => {
+  try {
+    const deleteCards = flashcard.Cards.map((val) => {
+      return Card.findByIdAndDelete(val);
+    });
+
+    await Promise.all(deleteCards);
+
+    const cardsId = await savedManyCard(cards);
+    flashcard.Cards = cardsId;
+    const savedFlashcard = await flashcard.save();
+    return savedFlashcard;
+  } catch (err) {
+    throw err;
+  }
 };
 
 module.exports = flashcardController;

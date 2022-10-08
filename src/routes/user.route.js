@@ -9,6 +9,8 @@ router.post("/profile", isAuth, userController.addUserProfile);
 
 router.post("/hisroty", isAuth, userController.addUserActivity);
 
+router.post("/bookmark", isAuth, userController.addUserBookmark);
+
 router.get("/hisroty", isAuth, userController.getUserHistory);
 
 module.exports = router;
