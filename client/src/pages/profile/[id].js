@@ -7,6 +7,10 @@ import { Link, useParams } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import { getAllHistory } from "../../redux/actions/historyAction";
 import moment from "moment";
+import { BsStarFill } from "react-icons/bs";
+import rank1 from "../../utils/images/rank1.jpeg";
+import rank2 from "../../utils/images/rank2.jpeg";
+import rank3 from "../../utils/images/rank3.jpeg";
 
 const Profile = () => {
   const { id } = useParams();
@@ -17,15 +21,31 @@ const Profile = () => {
   }, [auth, dispatch]);
 
   const [userProfile, setUserProfile] = useState();
+  const [totalLike, setTotalLike] = useState(0);
   useEffect(() => {
     const fetchUserProfileData = async () => {
       const res = await getDataAPI(`users/profile/${id}`, auth.token);
       setUserProfile(res.data.user);
+      const resTotalLike = await getDataAPI(
+        `posts/totalLike/${id}`,
+        auth.token
+      );
+      setTotalLike(resTotalLike.data.totalLike);
     };
     fetchUserProfileData();
   }, [id]);
 
   console.log(history);
+
+  const selectRank = () => {
+    if (totalLike >= 0 && totalLike < 1) {
+      return rank1;
+    } else if (totalLike >= 1 && totalLike < 2) {
+      return rank2;
+    } else if (totalLike >= 2) {
+      return rank3;
+    }
+  };
   return (
     <div
       style={{
@@ -46,6 +66,23 @@ const Profile = () => {
           <h6>{userProfile?.email}</h6>
           <p>University: {userProfile?.university}</p>
           <p>Graduation Year: {userProfile?.graduationYear}</p>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <h3>
+            {totalLike} <BsStarFill />
+          </h3>
+          <img
+            className="rounded-circle"
+            style={{ width: "150px" }}
+            src={selectRank()}
+            alt=""
+          />
         </div>
         <Button variant="primary">Edit</Button>
       </div>
