@@ -68,7 +68,7 @@ const NavbarMenu = () => {
             <NavDropdown
               title={
                 <img
-                  src={auth.user.avatar}
+                  src={auth.user.profile.avatar}
                   alt="avatar"
                   style={{
                     width: "36px",
@@ -80,7 +80,7 @@ const NavbarMenu = () => {
               id="collasible-nav-dropdown"
               align="end"
             >
-              <NavDropdown.Item as={Link} to={`/profile`}>
+              <NavDropdown.Item as={Link} to={`/profile/${auth.user._id}`}>
                 プロフィール
               </NavDropdown.Item>
               <NavDropdown.Item onClick={handleShowModalChangePassword}>
