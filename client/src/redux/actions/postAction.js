@@ -32,6 +32,7 @@ export const getPostById =
   async (dispatch) => {
     try {
       const res = await getDataAPI(`posts/${id}`, auth.token);
+      console.log(res);
       dispatch({
         type: POST.GET_POST,
         payload: res.data.post,
