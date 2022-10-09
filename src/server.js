@@ -12,6 +12,7 @@ const { v4: uuidv4 } = require("uuid");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const cron = require("node-cron");
+const Comments = require("./models/commentModel");
 
 const remind = require("./helpers/remindLearn");
 
@@ -104,21 +105,21 @@ io.on("connection", (socket) => {
 
   socket.on("createComment", async (data) => {
     console.log("datadata", data);
-    const { title, content, postId, createdAt } = data;
+    const { userAvatar, userDisplayName, content, postId } = data;
 
     const newComment = new Comments({
-      title,
+      userAvatar,
+      userDisplayName,
       content,
       postId,
-      createdAt,
     });
 
     await newComment.save();
-    console.log("newComment.product_id", newComment.product_id);
+    console.log("newComment.postId", newComment.postId);
     console.log("users array", users);
     console.log(socket.adapter.rooms);
 
-    io.to(newComment.product_id).emit("sendCommentToClient", newComment);
+    io.to(newComment.postId).emit("sendCommentToClient", newComment);
   });
 
   socket.on("disconnect", () => {
