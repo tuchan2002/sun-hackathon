@@ -14,4 +14,5 @@ export default combineReducers({
   flashcard: flashcardReducer,
   history: historyReducer,
   socket: socketReducer,
+  post: postReducer,
 });

@@ -5,6 +5,7 @@ const uploadRoute = require("./upload.route");
 const quizRoute = require("./quiz.route");
 const questionRoute = require("./question.route");
 const userRoute = require("./user.route");
+const commentRoute = require("./comment.route");
 
 const flashcardRoute = require("./flashcard.route");
 const cardRoute = require("./card.route");
@@ -33,5 +34,7 @@ appRoute.use("/flashcards", flashcardRoute);
 appRoute.use("/cards", cardRoute);
 
 appRoute.use("/posts", postRoute);
+
+appRoute.use("/comments", commentRoute);
 
 module.exports = appRoute;
