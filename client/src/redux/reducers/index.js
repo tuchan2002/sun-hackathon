@@ -8,11 +8,11 @@ import quizReducer from "./quizReducer";
 import socketReducer from "./socketReducer";
 
 export default combineReducers({
-  auth: authReducer,
-  alert: alertReducer,
-  quiz: quizReducer,
-  flashcard: flashcardReducer,
-  history: historyReducer,
-  socket: socketReducer,
-  post: postReducer,
+    auth: authReducer,
+    alert: alertReducer,
+    quiz: quizReducer,
+    flashcard: flashcardReducer,
+    history: historyReducer,
+    socket: socketReducer,
+    post: postReducer,
 });
